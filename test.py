@@ -8,7 +8,7 @@ class MyWindow(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle('PyQt5 Example')
+        self.setWindowTitle('Example')
         self.setGeometry(100, 100, 400, 300)
 
 if __name__ == '__main__':
