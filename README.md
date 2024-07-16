@@ -12,6 +12,7 @@ conda activate BrainAI
 ## packages required
 ```
 pip install openvino==2024.0.0
+pip install openvino-dev==2024.0.0
 pip install opencv-python==4.9.0.80
 pip install ipywidgets==8.1.2
 pip install tensorflow==2.13.1
