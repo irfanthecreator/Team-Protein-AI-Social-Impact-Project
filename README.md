@@ -19,3 +19,6 @@ pip install tensorflow==2.13.1
 pip install gradio
 pip install streamlit
 ```
+
+## How to install openvino-dev properly
+C:\Users\hwoo4\AppData\Roaming\Python\Python311\Scripts
