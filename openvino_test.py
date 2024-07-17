@@ -15,6 +15,8 @@ JOINT_NAME = [
     "right_ankle"
 ] # 0 to 17
 
+class PosDetection(cv2.)
+
 def resize_image(image, input_width, input_height):
     resized_image = cv2.resize(image, (input_width, input_height))
     transposed_image = resized_image.transpose(2, 0, 1)
@@ -30,9 +32,7 @@ def __main():
 
     input_layer = compiled_model.input(0)
     output_layer = compiled_model.output(0)
-
     # [1,3,448,448] [1,17,224,224]
-    print(input_layer.shape, output_layer.shape)
 
     # load image
     image = cv2.imread("img/t3.jpg")
