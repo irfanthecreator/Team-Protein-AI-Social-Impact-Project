@@ -17,9 +17,8 @@ PATHS = {
     }
 }
 
-class PosDetection:
+class PosDetection(object):
     __instance = None
-    model_path = PATHS["FP32"]["xml"]
     threshold = 0.01
 
     # singleton pattern
@@ -30,6 +29,14 @@ class PosDetection:
     
     def __init__(self):
         self.core = ov.Core()
+        self.model_init()
+
+    def model_init(self, precision="FP32"):
+        if precision == "FP32":
+            self.model_path = PATHS["FP32"]["xml"]
+        else:
+            self.model_path = PATHS["FP16"]["xml"]
+
         self.model = self.core.read_model(model=self.model_path)
         self.compiled_model = self.core.compile_model(model=self.model, device_name="CPU")
 
@@ -79,6 +86,10 @@ class PosDetection:
         # list of tuple, which is a position of each joint
         # None represents the joint is not found in the image
         return points
+    
+    def setModelPrecision(self, precision):
+        print(precision)
+        self.model_init(precision)
 
 # showing results on image
 def getRadius(img):
