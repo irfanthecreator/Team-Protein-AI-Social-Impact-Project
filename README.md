@@ -21,4 +21,6 @@ pip install streamlit
 ```
 
 ## How to install openvino-dev properly
-C:\Users\hwoo4\AppData\Roaming\Python\Python311\Scripts
+...
+
+## 

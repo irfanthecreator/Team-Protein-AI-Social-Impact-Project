@@ -72,7 +72,8 @@ class PosDetection:
             x = point[0] / heatmap.shape[1]
             y = point[1] / heatmap.shape[0]
 
-            points.append((int(w * x), int(h* y)) if confidence > self.threshold else None)
+            img_pos = int(w * x), int(h* y)
+            points.append(img_pos if confidence > self.threshold else None)
         
         # list of tuple, which is a position of each joint
         # None represents the joint is not found in the image
@@ -107,7 +108,8 @@ def drawLines(img, points, color: tuple[int, int, int]):
 
         for j in con.CONNECTIONS[i]:
             end_point = points[j]
-            cv2.line(img, start_point, end_point, color, thickness=radius)
+            if end_point is not None:
+                cv2.line(img, start_point, end_point, color, thickness=radius)
         
     return img
 
@@ -117,17 +119,16 @@ def __main():
         print("Error")
         return
     
+    pd = PosDetection()
     while True:
         ret, frame = cap.read()
         if not ret:
             break
-    
-        pd = PosDetection()
+
         points = pd.predict(frame)
-
-        result_img = drawCircle(frame, points, (255, 0, 0))
-
+        result_img = drawLines(frame, points, (255, 0, 0))
         cv2.imshow("Name", cv2.cvtColor(result_img, cv2.COLOR_RGB2BGR))
+        
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
