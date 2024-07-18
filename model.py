@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import cv2
 # custom module
 import model_const as con
+from joint_recog import isDangerPose as _isDangerPose
 
 PATHS = {
     "FP16": {
@@ -18,7 +19,7 @@ PATHS = {
 
 class PosDetection:
     __instance = None
-    model_path = PATHS["FP16"]["xml"]
+    model_path = PATHS["FP32"]["xml"]
     threshold = 0.01
 
     # singleton pattern
@@ -113,6 +114,29 @@ def drawLines(img, points, color: tuple[int, int, int]):
         
     return img
 
+def isDangerPose(points: list[tuple[int, int] | None]):
+    temp = False
+    for side in ("left", "right"):
+        hip_idx = con.JOINT_NAME.index(f"{side}_hip")
+        knee_idx = con.JOINT_NAME.index(f"{side}_knee")
+        ankle_idx = con.JOINT_NAME.index(f"{side}_ankle")
+
+        p1 = points[hip_idx]
+        p2 = points[knee_idx]
+        p3 = points[ankle_idx]
+
+        if None in (p1, p2, p3):
+            continue
+
+        # 2d vector p1->p2
+        v1 = np.array([p2[0] - p1[0], p2[1] - p1[1]])
+        # 2d vector p2->p3
+        v2 = np.array([p3[0] - p2[0], p3[1] - p2[1]])
+        temp = temp or _isDangerPose(v1, v2)
+
+    # if any of both sides has danger pose, danger = True
+    return temp
+
 def __main():
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
@@ -126,7 +150,16 @@ def __main():
             break
 
         points = pd.predict(frame)
-        result_img = drawLines(frame, points, (255, 0, 0))
+        danger = isDangerPose(points)
+        print("danger: {}".format(
+            danger
+        ))
+        if danger:
+            color = (255, 0, 0)  # red
+        else:
+            color = (0, 255, 0)  # green
+        
+        result_img = drawLines(frame, points, color)
         cv2.imshow("Name", cv2.cvtColor(result_img, cv2.COLOR_RGB2BGR))
         
         if cv2.waitKey(1) & 0xFF == ord('q'):

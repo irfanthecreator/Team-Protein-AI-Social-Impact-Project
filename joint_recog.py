@@ -66,6 +66,39 @@ def angle(v1, v2):
     angle_deg = np.degrees(angle_rad)
     
     return angle_deg
+
+#############################################################
+def isDangerPose(vec1, vec2):
+    COS_SIM_THRESHOLD = -0.7
+    KNEELING_RECOGNITION_THRESHOLD = 0.3
+
+    s1 = np.linalg.norm(vec1)
+    s2 = np.linalg.norm(vec2)
+    dy1 = vec1[1]
+    dy2 = vec2[1]
+    y_ratio = abs(dy2 / dy1 if dy1 != 0 else 0)
+
+    # -1 <= cos_sim <= 1
+    cos_sim = vec1.dot(vec2) / s1 / s2
+    angl = angle(-vec1, vec2)
+
+    # if knee is over-bended (close to -1)
+    if cos_sim < COS_SIM_THRESHOLD:
+        danger = True
+    
+    # if dy is too small (ex. kneeling)
+    elif y_ratio < KNEELING_RECOGNITION_THRESHOLD:
+        danger = True
+    
+    else:
+        danger = False
+
+    print("cos_sim: {}, angle: {}, y_ratio: {}, danger: {}"\
+        .format(cos_sim, angl, y_ratio, danger))
+
+    return danger
+
+#############################################################
     
 def update_lines():
     global vec12, vec23
@@ -74,29 +107,24 @@ def update_lines():
 
     vec12 = getVec(p1, p2)
     vec23 = getVec(p2, p3)
-
-    s12 = np.linalg.norm(vec12)
-    s23 = np.linalg.norm(vec23)
     
-    cos_sim = vec12.dot(vec23) / s12 / s23
-    angl = angle(-vec12, vec23)
-    print("cos_sim: {}, angle: {}"\
-        .format(cos_sim, angl))
+    danger = isDangerPose(vec12, vec23)
 
-root = tk.Tk()
-root.title("Movable Dots")
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.title("Movable Dots")
 
-canvas = tk.Canvas(root, width=400, height=400)
-canvas.pack()
+    canvas = tk.Canvas(root, width=400, height=400)
+    canvas.pack()
 
-p1 = DraggableDot(canvas, 100, 100, "p1")
-p2 = DraggableDot(canvas, 200, 200, "p2")
-p3 = DraggableDot(canvas, 300, 100, "p3")
+    p1 = DraggableDot(canvas, 100, 100, "p1")
+    p2 = DraggableDot(canvas, 200, 200, "p2")
+    p3 = DraggableDot(canvas, 300, 100, "p3")
 
-vec12 = getVec(p1, p2)
-vec23 = getVec(p2, p3)
+    vec12 = getVec(p1, p2)
+    vec23 = getVec(p2, p3)
 
-line1 = canvas.create_line(p1.x, p1.y, p2.x, p2.y, fill="black")
-line2 = canvas.create_line(p2.x, p2.y, p3.x, p3.y, fill="black")
+    line1 = canvas.create_line(p1.x, p1.y, p2.x, p2.y, fill="black")
+    line2 = canvas.create_line(p2.x, p2.y, p3.x, p3.y, fill="black")
 
-root.mainloop()
+    root.mainloop()
