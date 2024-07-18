@@ -69,7 +69,7 @@ def angle(v1, v2):
 
 #############################################################
 def isDangerPose(vec1, vec2):
-    COS_SIM_THRESHOLD = -0.7
+    COS_SIM_THRESHOLD = -0.5
     KNEELING_RECOGNITION_THRESHOLD = 0.3
 
     s1 = np.linalg.norm(vec1)

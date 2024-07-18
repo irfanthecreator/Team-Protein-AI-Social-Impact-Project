@@ -8,6 +8,7 @@ import cv2
 from PIL import Image
 import io
 import numpy as np
+import playsound
 # custom module
 import model_pose
 
@@ -37,21 +38,38 @@ def main():
             pose_detector = model_pose.PosDetection()
             pose_detector.setModelPrecision(model_selector)
 
+            st_frame = st.empty()
+            def stopCam(*option):
+                global run
+                run = False
+
+            st.button("Stop Webcam", on_click=stopCam)
             while run:
                 ret, frame = cap.read()
                 if not ret:
                     st.error("Failed to capture video.")
                     break
                 # Pose prediction
-                points = pose_detector.predict(frame)
-                frame = model_pose.drawCircle(frame, points, (255, 0, 0))
-                frame = model_pose.drawLines(frame, points, (0, 255, 0))
+                points = pose_detector.predict(frame)                
+                toggle = False
+
+                if model_pose.isDangerPose(points):
+                    # green
+                    frame = model_pose.drawCircle(frame, points, (0, 0, 255))
+                    frame = model_pose.drawLines(frame, points, (0, 0, 255))
+
+                    if not toggle:
+                        playsound.playsound("C:\\dev\\Team-Protein-AI-Social-Impact-Project\\audio\\beep.mp3")
+                        toggle = True
+                else:
+                    # red
+                    frame = model_pose.drawCircle(frame, points, (255, 0, 0))
+                    frame = model_pose.drawLines(frame, points, (255, 0, 0))
+                    toggle = False
                 
-                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-                st.image(frame)
-                
-                if st.button('Stop Webcam'):
-                    run = False
+                st_frame.image(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+
+            # Place the button outside the loop  
             cap.release()
 
     with tab2:
