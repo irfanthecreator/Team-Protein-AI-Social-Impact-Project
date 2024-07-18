@@ -18,7 +18,7 @@ PATHS = {
 
 class PosDetection:
     __instance = None
-    model_path = PATHS["FP32"]["xml"]
+    model_path = PATHS["FP16"]["xml"]
     threshold = 0.01
 
     # singleton pattern
@@ -112,13 +112,27 @@ def drawLines(img, points, color: tuple[int, int, int]):
     return img
 
 def __main():
-    pd = PosDetection()
-    img = cv2.imread("img/t3.jpg")
-    points = pd.predict(img)
+    cap = cv2.VideoCapture(0)
+    if not cap.isOpened():
+        print("Error")
+        return
+    
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+    
+        pd = PosDetection()
+        points = pd.predict(frame)
 
-    result_img = drawLines(img, points, (255, 255, 0))
+        result_img = drawCircle(frame, points, (255, 0, 0))
 
-    plt.imshow(result_img)
-    plt.show()
+        cv2.imshow("Name", cv2.cvtColor(result_img, cv2.COLOR_RGB2BGR))
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+    
 if __name__ == "__main__":
     __main()
