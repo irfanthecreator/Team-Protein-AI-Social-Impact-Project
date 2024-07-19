@@ -20,7 +20,11 @@ pip install gradio
 pip install streamlit
 ```
 
-## How to install openvino-dev properly
-...
-
-## 
+## How to run the code
+```
+python main.py
+```
+or 
+```
+streamlit run streamlit_ui.py
+```
