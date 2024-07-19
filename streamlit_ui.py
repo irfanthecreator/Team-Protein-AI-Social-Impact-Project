@@ -8,10 +8,16 @@ import cv2
 from PIL import Image
 import io
 import numpy as np
+import threading
 import playsound
 # custom module
 import model_pose
 
+def playsound_with_thread():
+    threading.Thread(
+        target=lambda:\
+            playsound.playsound("C:\\dev\\Team-Protein-AI-Social-Impact-Project\\audio\\beep.mp3")
+    ).start()
 
 st.set_page_config(page_title="AI-Powered Posture Monitoring", page_icon="👴", layout="wide")
 
@@ -59,7 +65,7 @@ def main():
                     frame = model_pose.drawLines(frame, points, (0, 0, 255))
 
                     if not toggle:
-                        playsound.playsound("C:\\dev\\Team-Protein-AI-Social-Impact-Project\\audio\\beep.mp3")
+                        playsound_with_thread()
                         toggle = True
                 else:
                     # red
