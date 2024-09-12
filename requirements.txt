@@ -1,6 +1,6 @@
 openvino==2024.0.0
 openvino-dev==2024.0.0
-opencv-python==4.9.0.80
+opencv-python
 ipywidgets==8.1.2
 tensorflow==2.13.1
 gradio
