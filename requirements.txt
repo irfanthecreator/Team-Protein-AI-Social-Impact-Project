@@ -1,7 +1,13 @@
-openvino==2024.0.0
-openvino-dev==2024.0.0
-opencv-python
+openvino==2024.3.0
+opencv-python==4.9.0.80
 ipywidgets==8.1.2
-tensorflow==2.13.1
+tensorflow==2.17.0
 gradio
 streamlit
+opencv-python-headless==4.10.0.84
+pillow==10.4.0
+numpy==1.26.4
+Python-IO==0.3
+matplotlib==3.9.1
+streamlit-camera-input-live==0.2.0
+moviepy==2.0.0.dev2
