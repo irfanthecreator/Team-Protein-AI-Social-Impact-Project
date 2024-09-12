@@ -8,12 +8,12 @@ from joint_recog import isDangerPose as _isDangerPose
 
 PATHS = {
     "FP16": {
-        "bin": r"intel\human-pose-estimation-0007\FP16\human-pose-estimation-0007.bin",
-        "xml": r"intel\human-pose-estimation-0007\FP16\human-pose-estimation-0007.xml",
+        "bin": r"Team-Protein-AI-Social-Impact-Project\intel\human-pose-estimation-0007\FP16\human-pose-estimation-0007.bin",
+        "xml": r"Team-Protein-AI-Social-Impact-Project\intel\human-pose-estimation-0007\FP16\human-pose-estimation-0007.xml",
     },
     "FP32": {
-        "bin": r"intel\human-pose-estimation-0007\FP32\human-pose-estimation-0007.bin",
-        "xml": r"intel\human-pose-estimation-0007\FP32\human-pose-estimation-0007.xml",
+        "bin": r"Team-Protein-AI-Social-Impact-Project\intel\human-pose-estimation-0007FP32\human-pose-estimation-0007.bin",
+        "xml": r"Team-Protein-AI-Social-Impact-Project\intel\human-pose-estimation-0007\FP32\human-pose-estimation-0007.xml",
     }
 }
 
