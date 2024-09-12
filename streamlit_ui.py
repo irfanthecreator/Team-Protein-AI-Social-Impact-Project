@@ -9,7 +9,6 @@ from PIL import Image
 import io
 import numpy as np
 import threading
-import playsound
 # custom module
 import model_pose
 
