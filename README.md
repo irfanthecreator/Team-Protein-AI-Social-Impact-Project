@@ -1,6 +1,8 @@
 # Team-Protein-AI-Social-Impact-Project
 ITE+Brain AI South Korean Exchange Program
 
+Team Website: https://sites.google.com/view/ite2024protein/home-team-intro-%ED%8C%80-%EC%86%8C%EA%B0%9C
+
 ## project settings
 - python version: 3.11.8
 - virtual environment name recommended: BrainAI
